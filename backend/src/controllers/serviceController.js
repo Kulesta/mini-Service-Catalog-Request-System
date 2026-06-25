@@ -42,7 +42,7 @@ exports.getServices = async (req, res) => {
 };
 exports.createService = async (req, res) => {
     try {
-        const { service_name, category_id, base_price, vat_percent, discount_amount, image } = req.body;
+        const { service_name, category_id, base_price, vat_percent, discount_amount, image, images, tags, availability } = req.body;
 
         if (!service_name || !category_id || !base_price) {
             return res.status(400).json({ message: 'Please fill required fields' });
@@ -60,7 +60,10 @@ exports.createService = async (req, res) => {
             base_price,
             vat_percent,
             discount_amount,
-            image
+            image,
+            images: images || [],
+            tags: tags || [],
+            availability: availability || { days: ['mon', 'tue', 'wed', 'thu', 'fri'], start_time: '09:00', end_time: '17:00', slot_duration: 60 }
         });
 
         res.status(201).json(service);
@@ -84,7 +87,7 @@ exports.updateService = async (req, res) => {
         // Prepare updates: if frontend sent `category_id`, map it to `category`
         const updates = { ...req.body };
 
-        console.log('Updating service', req.params.id, 'with', updates); // DEBUG
+
 
         if (updates.category_id) {
             const category = await Category.findById(updates.category_id);
@@ -100,7 +103,7 @@ exports.updateService = async (req, res) => {
             runValidators: true
         });
 
-        console.log('Service updated result:', service); // DEBUG
+
 
         res.json(service);
     } catch (error) {

@@ -14,6 +14,10 @@ const requestSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    customer_email: {
+        type: String,
+        default: ''
+    },
     customer_note: {
         type: String
     },
@@ -21,6 +25,14 @@ const requestSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Service'
     }],
+    booking_date: {
+        type: String,
+        default: ''
+    },
+    booking_time: {
+        type: String,
+        default: ''
+    },
     status: {
         type: String,
         enum: ['pending', 'completed', 'cancelled'],

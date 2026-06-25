@@ -25,6 +25,23 @@ app.use('/api/categories', require('./src/routes/categoryRoutes'));
 app.use('/api/services', require('./src/routes/serviceRoutes'));
 app.use('/api/public', require('./src/routes/publicRoutes'));
 app.use('/api/requests', require('./src/routes/requestRoutes'));
+app.use('/api/notifications', require('./src/routes/notificationRoutes'));
+app.use('/api/reviews', require('./src/routes/reviewRoutes'));
+app.use('/api/analytics', require('./src/routes/analyticsRoutes'));
+app.use('/api/banners', require('./src/routes/bannerRoutes'));
+app.use('/api/profile', require('./src/routes/profileRoutes'));
+
+// Email status check (protected)
+const { protect } = require('./src/middleware/authMiddleware');
+app.get('/api/settings/email-status', protect, (req, res) => {
+    const configured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+    res.json({
+        configured,
+        host: configured ? process.env.SMTP_HOST : null,
+        port: configured ? process.env.SMTP_PORT : null,
+        from: configured ? (process.env.SMTP_FROM || process.env.SMTP_USER) : null,
+    });
+});
 
 app.get('/', (req, res) => {
     res.send('Salon Mini Catalog API is running');

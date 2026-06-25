@@ -49,14 +49,29 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['provider'],
         default: 'provider'
+    },
+    about: {
+        type: String,
+        default: ''
+    },
+    cover_photo: {
+        type: String,
+        default: ''
+    },
+    business_hours: {
+        type: Object,
+        default: {}
+    },
+    social_links: {
+        type: Object,
+        default: {}
     }
 }, { timestamps: true });
 
-userSchema.pre('validate', function (next) {
+userSchema.pre('validate', function () {
     if (!this.slug && this.company_name) {
         this.slug = slugify(this.company_name);
     }
-    next();
 });
 
 module.exports = mongoose.model('User', userSchema);

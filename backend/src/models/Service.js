@@ -30,8 +30,37 @@ const serviceSchema = new mongoose.Schema({
         default: 0
     },
     image: {
-        type: String, // URL
+        type: String,
         default: ''
+    },
+    images: {
+        type: [String],
+        default: []
+    },
+    tags: {
+        type: [String],
+        default: []
+    },
+    availability: {
+        days: {
+            type: [String],
+            enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+            default: ['mon', 'tue', 'wed', 'thu', 'fri']
+        },
+        start_time: {
+            type: String,
+            default: '09:00'
+        },
+        end_time: {
+            type: String,
+            default: '17:00'
+        },
+        slot_duration: {
+            type: Number,
+            default: 60,
+            min: 15,
+            max: 480
+        }
     }
 }, {
     timestamps: true,
